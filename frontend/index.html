@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stock Prediction Studio</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="control-panel">
+        <div>
+          <p class="eyebrow">Forecast Workspace</p>
+          <h1>Stock Prediction Studio</h1>
+        </div>
+
+        <form id="prediction-form" class="form-stack">
+          <label>
+            <span>Ticker</span>
+            <input id="ticker" name="ticker" value="AAPL" autocomplete="off" required>
+          </label>
+
+          <div class="date-grid">
+            <label>
+              <span>Start</span>
+              <input id="start" name="start" type="date" value="2020-01-01" required>
+            </label>
+            <label>
+              <span>End</span>
+              <input id="end" name="end" type="date" value="2024-12-31" required>
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>Model</legend>
+            <div class="segmented">
+              <label>
+                <input type="radio" name="model" value="linear" checked>
+                <span>Linear</span>
+              </label>
+              <label>
+                <input type="radio" name="model" value="random_forest">
+                <span>Random Forest</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <label>
+            <span>Business days ahead <strong id="days-label">10</strong></span>
+            <input id="days-ahead" name="daysAhead" type="range" min="1" max="60" value="10">
+          </label>
+
+          <button id="run-button" type="submit">Run prediction</button>
+        </form>
+
+        <p class="note">Educational model only. Forecasts are uncertain and are not financial advice.</p>
+      </aside>
+
+      <section class="workspace">
+        <section class="summary-strip" aria-label="Prediction summary">
+          <article>
+            <span>Latest close</span>
+            <strong id="latest-close">--</strong>
+          </article>
+          <article>
+            <span>Validation MAE</span>
+            <strong id="mae">--</strong>
+          </article>
+          <article>
+            <span>Validation R2</span>
+            <strong id="r2">--</strong>
+          </article>
+        </section>
+
+        <section class="chart-toolbar">
+          <div>
+            <p class="eyebrow" id="model-label">Ready</p>
+            <h2 id="chart-title">AAPL close price and indicators</h2>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Chart views">
+            <button class="tab active" type="button" data-view="price">Price</button>
+            <button class="tab" type="button" data-view="rsi">RSI</button>
+            <button class="tab" type="button" data-view="forecast">Forecast</button>
+          </div>
+        </section>
+
+        <section class="chart-area">
+          <canvas id="chart" width="1200" height="560" aria-label="Stock chart"></canvas>
+          <div id="empty-state" class="empty-state">
+            <strong>Run a prediction to populate the workspace.</strong>
+            <span>The app will fetch market history, train the selected model, and render the forecast here.</span>
+          </div>
+        </section>
+
+        <section class="forecast-section">
+          <div>
+            <h2>Forecast table</h2>
+            <p id="forecast-caption">No forecast generated yet.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Predicted close</th>
+                </tr>
+              </thead>
+              <tbody id="forecast-body">
+                <tr><td colspan="2">Waiting for prediction.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" hidden></div>
+    <script src="/app.js"></script>
+  </body>
+</html>
